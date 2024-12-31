@@ -6,10 +6,11 @@ function Library:new(name, description)
     -- Crear el Main Frame
     self.MainFrame = Instance.new("Frame")
     self.MainFrame.Size = UDim2.new(0, 500, 0, 400)
-    self.MainFrame.Position = UDim2.new(0.5, -250, 0.5, -200)
+    self.MainFrame.Position = UDim2.new(0.5, -250, 0.5, -200) -- Centrar en pantalla
     self.MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     self.MainFrame.BorderSizePixel = 0
     self.MainFrame.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    self.MainFrame.Visible = true -- Asegurarse de que sea visible
 
     -- Título y descripción
     self.Title = Instance.new("TextLabel")
