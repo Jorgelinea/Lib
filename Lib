@@ -9,60 +9,55 @@ function UILibrary:CreateWindow(title, description)
     if existingGui and existingGui ~= screenGui then
         existingGui:Destroy()
     end
-    
-local TweenService = game:GetService("TweenService")
 
-local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 600, 0, 360)
-mainFrame.Position = UDim2.new(0.5, -300, 0.4, -180) -- Posición final
-mainFrame.BackgroundColor3 = Color3.fromRGB(255, 102, 102)
-mainFrame.Parent = screenGui
-mainFrame.Active = true
-mainFrame.BackgroundTransparency = 0.3 
-mainFrame.Draggable = true
+    local TweenService = game:GetService("TweenService")
 
-mainFrame.Position = UDim2.new(0.5, -300, 1, 0)
+    -- Main Frame
+    local mainFrame = Instance.new("Frame")
+    mainFrame.Size = UDim2.new(0, 600, 0, 360)
+    mainFrame.Position = UDim2.new(0.5, -300, 1, 0) -- Posición inicial
+    mainFrame.BackgroundColor3 = Color3.fromRGB(255, 102, 102)
+    mainFrame.Parent = screenGui
+    mainFrame.Active = true
+    mainFrame.BackgroundTransparency = 0.3
+    mainFrame.Draggable = true
 
-local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-local goal = {Position = UDim2.new(0.5, -300, 0.4, -180)}
-local tween = TweenService:Create(mainFrame, tweenInfo, goal)
+    -- Animación de entrada
+    local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+    local goal = {Position = UDim2.new(0.5, -300, 0.4, -180)}
+    local tween = TweenService:Create(mainFrame, tweenInfo, goal)
+    tween:Play()
 
-tween:Play()
+    -- UI Detalles
+    local border = Instance.new("UIStroke")
+    border.Parent = mainFrame
+    border.Thickness = 2
+    border.Color = Color3.fromRGB(255, 0, 0)
+    border.Transparency = 0.5
 
-tween.Completed:Connect(function()
-    print("gui")
-end)
+    local gradient = Instance.new("UIGradient")
+    gradient.Parent = mainFrame
+    gradient.Color = ColorSequence.new(Color3.fromRGB(220, 0, 0), Color3.fromRGB(130, 0, 0))
+    gradient.Rotation = 45
 
-local border = Instance.new("UIStroke")
-border.Parent = mainFrame
-border.Thickness = 2
-border.Color = Color3.fromRGB(255, 0, 0)
-border.Transparency = 0.5
+    local mainFrameCorner = Instance.new("UICorner")
+    mainFrameCorner.CornerRadius = UDim.new(0, 10)
+    mainFrameCorner.Parent = mainFrame
 
-local gradient = Instance.new("UIGradient")
-gradient.Parent = mainFrame
-gradient.Color = ColorSequence.new(
-    Color3.fromRGB(220, 0, 0), 
-    Color3.fromRGB(130, 0, 0)   
-)
-gradient.Rotation = 45 
-
-local mainFrameCorner = Instance.new("UICorner")
-mainFrameCorner.CornerRadius = UDim.new(0, 10)
-mainFrameCorner.Parent = mainFrame
-
+    -- Top Bar
     local topBar = Instance.new("Frame")
     topBar.Size = UDim2.new(1, 0, 0, 40)
     topBar.BackgroundColor3 = Color3.fromRGB(139, 0, 0)
     topBar.Parent = mainFrame
 
-local topBarCorner = Instance.new("UICorner")
-topBarCorner.CornerRadius = UDim.new(0, 10)
-topBarCorner.Parent = topBar
+    local topBarCorner = Instance.new("UICorner")
+    topBarCorner.CornerRadius = UDim.new(0, 10)
+    topBarCorner.Parent = topBar
 
+    -- Title
     local titleLabel = Instance.new("TextLabel")
     titleLabel.Size = UDim2.new(0.55, 0, 1, 0)
-    titleLabel.Position = UDim2.new(0, 0.20, 0, 0)
+    titleLabel.Position = UDim2.new(0, 0, 0, 0)
     titleLabel.Text = title
     titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     titleLabel.BackgroundTransparency = 1
@@ -70,9 +65,10 @@ topBarCorner.Parent = topBar
     titleLabel.TextSize = 16
     titleLabel.Parent = topBar
 
+    -- Description
     local descriptionLabel = Instance.new("TextLabel")
     descriptionLabel.Size = UDim2.new(0.35, 0, 1, 0)
-    descriptionLabel.Position = UDim2.new(0.38, 0, 0, 0)
+    descriptionLabel.Position = UDim2.new(0.65, 0, 0, 0)
     descriptionLabel.Text = description
     descriptionLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
     descriptionLabel.BackgroundTransparency = 1
@@ -80,190 +76,152 @@ topBarCorner.Parent = topBar
     descriptionLabel.TextSize = 14
     descriptionLabel.Parent = topBar
 
+    -- Content Frame
     local contentFrame = Instance.new("Frame")
-    contentFrame.Size = UDim2.new(1, 0, 1, -10)
-    contentFrame.Position = UDim2.new(0, 0, 0, 41)
+    contentFrame.Size = UDim2.new(1, 0, 1, -40)
+    contentFrame.Position = UDim2.new(0, 0, 0, 40)
     contentFrame.BackgroundTransparency = 1
     contentFrame.Parent = mainFrame
 
+    -- Tabs Frame
     local tabsFrame = Instance.new("ScrollingFrame")
-    tabsFrame.Size = UDim2.new(0, 150, 0, 315)
+    tabsFrame.Size = UDim2.new(0, 150, 1, 0)
     tabsFrame.Position = UDim2.new(0, 0, 0, 0)
-    tabsFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    tabsFrame.ScrollBarThickness = 0
     tabsFrame.BackgroundTransparency = 1
+    tabsFrame.ScrollBarThickness = 0
     tabsFrame.Parent = contentFrame
 
     local tabListLayout = Instance.new("UIListLayout")
-tabListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-tabListLayout.Parent = tabsFrame
+    tabListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    tabListLayout.Padding = UDim.new(0, 3)
+    tabListLayout.Parent = tabsFrame
 
-tabListLayout.Padding = UDim.new(0, 3)
-
+    -- Tab Content Frame
     local tabContentFrame = Instance.new("ScrollingFrame")
-    tabContentFrame.Size = UDim2.new(1, -150, 1, -36)
+    tabContentFrame.Size = UDim2.new(1, -150, 1, 0)
     tabContentFrame.Position = UDim2.new(0, 150, 0, 0)
     tabContentFrame.BackgroundTransparency = 1
     tabContentFrame.ScrollBarThickness = 0
     tabContentFrame.Parent = contentFrame
 
-local tabContentLayout = Instance.new("UIListLayout")
-tabContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-tabContentLayout.Parent = tabContentFrame
+    -- Minimize Button
+    local minimizeButton = Instance.new("ImageButton")
+    minimizeButton.Size = UDim2.new(0, 40, 0, 40)
+    minimizeButton.Position = UDim2.new(1, -80, 0, 0)
+    minimizeButton.Image = "rbxassetid://6034818372"
+    minimizeButton.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
+    minimizeButton.BackgroundTransparency = 0.5
+    minimizeButton.Parent = topBar
 
-tabContentLayout.Padding = UDim.new(1, 10)
+    local isMinimized = false
 
-local minimizeButton = Instance.new("ImageButton")
-minimizeButton.Size = UDim2.new(0, 40, 0, 40)
-minimizeButton.Position = UDim2.new(1, -80, 0, 0)
-minimizeButton.Image = "rbxassetid://6034818372"
-minimizeButton.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
-minimizeButton.BackgroundTransparency = 0.5
-minimizeButton.Parent = topBar
-
-local isMinimized = false
-
-local function animateResize(targetSize, duration)
-    local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    local tween = TweenService:Create(mainFrame, tweenInfo, {Size = targetSize})
-    tween:Play()
-    tween.Completed:Wait()
-end
-
-local function animateRotation(targetRotation, duration)
-    local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    local tween = TweenService:Create(minimizeButton, tweenInfo, {Rotation = targetRotation})
-    tween:Play()
-end
-
-local clickSound = Instance.new("Sound")
-clickSound.SoundId = "rbxassetid://1673280232"
-clickSound.Volume = 0.5
-clickSound.Parent = minimizeButton
-
-minimizeButton.MouseButton1Click:Connect(function()
-    clickSound:Play()
-    if isMinimized then
-        animateResize(UDim2.new(0, 600, 0, 360), 0.5)
-        contentFrame.Visible = true
-        animateRotation(0, 0.5)
-        isMinimized = false
-    else
-        contentFrame.Visible = false
-        animateResize(UDim2.new(0, 600, 0, 41), 0.5)
-        animateRotation(180, 0.5)
-        isMinimized = true
+    local function animateResize(targetSize, duration)
+        local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tween = TweenService:Create(mainFrame, tweenInfo, {Size = targetSize})
+        tween:Play()
+        tween.Completed:Wait()
     end
-end)
 
-local minimizeCorner = Instance.new("UICorner")
-minimizeCorner.CornerRadius = UDim.new(0, 10)
-minimizeCorner.Parent = minimizeButton
-
-local closeButton = Instance.new("ImageButton")
-closeButton.Size = UDim2.new(0, 40, 0, 40)
-closeButton.Position = UDim2.new(1, -40, 0, 0)
-closeButton.Image = "rbxassetid://6031094678"
-closeButton.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
-closeButton.BackgroundTransparency = 0.5
-closeButton.Parent = topBar
-closeButton.BorderSizePixel = 2
-closeButton.BorderColor3 = Color3.fromRGB(100, 100, 100)
-
-local closeCorner = Instance.new("UICorner")
-closeCorner.CornerRadius = UDim.new(0, 10)
-closeCorner.Parent = closeButton
-
-local enlargeTweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-local shrinkTweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-local rotateTweenInfo = TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true)
-
-local enlargeTween = TweenService:Create(closeButton, enlargeTweenInfo, {Size = UDim2.new(0, 60, 0, 60)})
-local shrinkTween = TweenService:Create(closeButton, shrinkTweenInfo, {Size = UDim2.new(0, 40, 0, 40)})
-local rotateTween = TweenService:Create(closeButton, rotateTweenInfo, {Rotation = 360})
-local stopRotationTween = TweenService:Create(closeButton, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {Rotation = 0})
-
-closeButton.MouseEnter:Connect(function()
-    rotateTween:Play()
-    enlargeTween:Play()
-end)
-
-closeButton.MouseLeave:Connect(function()
-    stopRotationTween:Play()
-    shrinkTween:Play()
-end)
-
-closeButton.MouseButton1Click:Connect(function() 
-task.wait(0.3)
-    screenGui:Destroy()
-end)
-
-function UILibrary:CreateTab(tabName)
-    local tabButton = Instance.new("TextButton")
-    tabButton.Size = UDim2.new(1, 0, 0, 45)
-    tabButton.Text = tabName
-    tabButton.BackgroundColor3 = Color3.fromRGB(120, 80, 80)
-    tabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    tabButton.Font = Enum.Font.Gotham
-    tabButton.TextSize = 16
-    tabButton.BackgroundTransparency = 0.7
-    tabButton.Parent = tabsFrame
-
-    local tabButtonCorner = Instance.new("UICorner")
-    tabButtonCorner.CornerRadius = UDim.new(0, 10)
-    tabButtonCorner.Parent = tabButton
-
-    local innerFrame = Instance.new("Frame")
-    innerFrame.Size = UDim2.new(1, -4, 1, -4)
-    innerFrame.Position = UDim2.new(0, 2, 0, 2)
-    innerFrame.BackgroundTransparency = 1
-    innerFrame.Parent = tabButton
-
-    local innerFrameStroke = Instance.new("UIStroke")
-    innerFrameStroke.Thickness = 2
-    innerFrameStroke.Color = Color3.fromRGB(255, 0, 0)
-    innerFrameStroke.Parent = innerFrame
-
-    local innerFrameCorner = Instance.new("UICorner")
-    innerFrameCorner.CornerRadius = UDim.new(0, 10)
-    innerFrameCorner.Parent = innerFrame
-
-    local tabContent = Instance.new("Frame")
-    tabContent.Size = UDim2.new(1, 0, 1, 0)
-    tabContent.BackgroundTransparency = 1
-    tabContent.Visible = true
-    tabContent.Parent = tabContentFrame
-
-    local tabContentLayout = Instance.new("UIListLayout")
-    tabContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    tabContentLayout.FillDirection = Enum.FillDirection.Vertical
-    tabContentLayout.Parent = tabContent
+    local function animateRotation(targetRotation, duration)
+        local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tween = TweenService:Create(minimizeButton, tweenInfo, {Rotation = targetRotation})
+        tween:Play()
+    end
 
     local clickSound = Instance.new("Sound")
     clickSound.SoundId = "rbxassetid://1673280232"
-    clickSound.Parent = tabButton
+    clickSound.Volume = 0.5
+    clickSound.Parent = minimizeButton
 
-    tabButton.MouseButton1Click:Connect(function()
+    minimizeButton.MouseButton1Click:Connect(function()
         clickSound:Play()
-        
-        for _, child in pairs(tabContentFrame:GetChildren()) do
-            if child:IsA("Frame") then
-                child.Visible = false
-            end
+        if isMinimized then
+            animateResize(UDim2.new(0, 600, 0, 360), 0.5)
+            contentFrame.Visible = true
+            animateRotation(0, 0.5)
+            isMinimized = false
+        else
+            contentFrame.Visible = false
+            animateResize(UDim2.new(0, 600, 0, 41), 0.5)
+            animateRotation(180, 0.5)
+            isMinimized = true
         end
-        tabContent.Visible = true
-
-        for _, child in pairs(tabsFrame:GetChildren()) do
-            if child:IsA("TextButton") then
-                child.BackgroundTransparency = 0.7
-                child.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-            end
-        end
-        tabButton.BackgroundTransparency = 0
-        tabButton.BackgroundColor3 = Color3.fromRGB(120, 80, 80)
     end)
 
-    return tabContent
+    -- Close Button
+    local closeButton = Instance.new("ImageButton")
+    closeButton.Size = UDim2.new(0, 40, 0, 40)
+    closeButton.Position = UDim2.new(1, -40, 0, 0)
+    closeButton.Image = "rbxassetid://6031094678"
+    closeButton.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
+    closeButton.BackgroundTransparency = 0.5
+    closeButton.Parent = topBar
+    closeButton.BorderSizePixel = 2
+    closeButton.BorderColor3 = Color3.fromRGB(100, 100, 100)
+
+    local enlargeTweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    local shrinkTweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+
+    local enlargeTween = TweenService:Create(closeButton, enlargeTweenInfo, {Size = UDim2.new(0, 60, 0, 60)})
+    local shrinkTween = TweenService:Create(closeButton, shrinkTweenInfo, {Size = UDim2.new(0, 40, 0, 40)})
+
+    local rotateTweenInfo = TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true)
+    local rotateTween = TweenService:Create(closeButton, rotateTweenInfo, {Rotation = 360})
+    local stopRotationTween = TweenService:Create(closeButton, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {Rotation = 0})
+
+    closeButton.MouseEnter:Connect(function()
+        rotateTween:Play()
+        enlargeTween:Play()
+    end)
+
+    closeButton.MouseLeave:Connect(function()
+        stopRotationTween:Play()
+        shrinkTween:Play()
+    end)
+
+    closeButton.MouseButton1Click:Connect(function()
+        task.wait(0.3)
+        screenGui:Destroy()
+    end)
+
+    function UILibrary:CreateTab(tabName)
+        local tabButton = Instance.new("TextButton")
+        tabButton.Size = UDim2.new(1, 0, 0, 45)
+        tabButton.Text = tabName
+        tabButton.BackgroundColor3 = Color3.fromRGB(120, 80, 80)
+        tabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        tabButton.Font = Enum.Font.Gotham
+        tabButton.TextSize = 16
+        tabButton.BackgroundTransparency = 0.7
+        tabButton.Parent = tabsFrame
+
+        local tabButtonCorner = Instance.new("UICorner")
+        tabButtonCorner.CornerRadius = UDim.new(0, 10)
+        tabButtonCorner.Parent = tabButton
+
+        local innerFrame = Instance.new("Frame")
+        innerFrame.Size = UDim2.new(1, -4, 1, -4)
+        innerFrame.Position = UDim2.new(0, 2, 0, 2)
+        innerFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+        innerFrame.Parent = tabButton
+        innerFrame.Visible = false
+
+        tabButton.MouseButton1Click:Connect(function()
+            for _, child in ipairs(tabsFrame:GetChildren()) do
+                if child:IsA("TextButton") then
+                    child.BackgroundColor3 = Color3.fromRGB(120, 80, 80)
+                    child.TextColor3 = Color3.fromRGB(255, 255, 255)
+                end
+            end
+            innerFrame.Visible = true
+            tabButton.BackgroundColor3 = Color3.fromRGB(255, 102, 102)
+            tabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        end)
+
+        return innerFrame
+    end
+
+    return mainFrame, tabsFrame, tabContentFrame
 end
 
 function UILibrary:CreateToggle(tabContent, text, defaultState, callback)
