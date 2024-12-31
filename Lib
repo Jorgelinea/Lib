@@ -3,16 +3,16 @@ local Library = {}
 function Library:new(name, description)
     local self = setmetatable({}, { __index = Library })
 
-    -- Crear el Main Frame
+    -- Crear el MainFrame
     self.MainFrame = Instance.new("Frame")
-    self.MainFrame.Size = UDim2.new(0, 500, 0, 400)
-    self.MainFrame.Position = UDim2.new(0.5, -250, 0.5, -200) -- Centrar en pantalla
+    self.MainFrame.Size = UDim2.new(0, 600, 0, 360)  -- Tamaño del frame
+    self.MainFrame.Position = UDim2.new(0.5, -300, 0.5, -180)  -- Centrado en la pantalla
     self.MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     self.MainFrame.BorderSizePixel = 0
     self.MainFrame.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-    self.MainFrame.Visible = true -- Asegurarse de que sea visible
+    self.MainFrame.Visible = true
 
-    -- Título y descripción
+    -- Título
     self.Title = Instance.new("TextLabel")
     self.Title.Size = UDim2.new(1, 0, 0, 50)
     self.Title.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
@@ -22,6 +22,7 @@ function Library:new(name, description)
     self.Title.TextXAlignment = Enum.TextXAlignment.Center
     self.Title.Parent = self.MainFrame
 
+    -- Descripción
     self.Description = Instance.new("TextLabel")
     self.Description.Size = UDim2.new(1, 0, 0, 40)
     self.Description.Position = UDim2.new(0, 0, 0, 50)
@@ -40,7 +41,7 @@ function Library:new(name, description)
     self.TabContainer.BorderSizePixel = 0
     self.TabContainer.Parent = self.MainFrame
 
-    -- Contenedor de botones, toggles, sliders, etc.
+    -- Contenedor de controles
     self.ControlContainer = Instance.new("Frame")
     self.ControlContainer.Size = UDim2.new(1, -150, 1, -90)
     self.ControlContainer.Position = UDim2.new(0, 150, 0, 90)
@@ -77,9 +78,9 @@ function Library:new(name, description)
         self.ControlContainer.Visible = false
     end)
 
-    -- Mostrar el contenido al hacer clic en minimizar
+    -- Función de mostrar
     self.MinimizeButton.MouseButton2Click:Connect(function()
-        self.MainFrame.Size = UDim2.new(0, 500, 0, 400)
+        self.MainFrame.Size = UDim2.new(0, 600, 0, 360)
         self.Description.Visible = true
         self.TabContainer.Visible = true
         self.ControlContainer.Visible = true
@@ -88,7 +89,7 @@ function Library:new(name, description)
     return self
 end
 
--- Función para crear un toggle dentro de un tab
+-- Función para crear un Toggle
 function Library:CreateToggle(tab, name, defaultState, callback)
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(1, 0, 0, 40)
@@ -129,7 +130,7 @@ function Library:CreateToggle(tab, name, defaultState, callback)
     return frame
 end
 
--- Función para crear un botón dentro de un tab
+-- Función para crear un botón
 function Library:CreateButton(tab, name, callback)
     local button = Instance.new("TextButton")
     button.Size = UDim2.new(1, 0, 0, 40)
